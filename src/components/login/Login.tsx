@@ -23,7 +23,7 @@ export default function Login() {
     try {
       const data = await login({ username, password })
       console.log("Login ok", data)
-      navigate("/profile")
+      navigate("/dashboard")
     } catch (error: any) {
       console.log("Erro ao logar", error.message)
       setError("Erro ao fazer login. Tente novamente.")

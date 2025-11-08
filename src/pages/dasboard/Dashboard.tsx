@@ -3,7 +3,7 @@ import { Home, User, Settings, BarChart, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Profile() {
+export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
   
