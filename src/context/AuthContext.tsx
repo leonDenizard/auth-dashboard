@@ -9,20 +9,31 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+  token: null,
+  login: () => {},
+  logout: () => {},
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(storage.getToken());
   const [user, setUser] = useState<{ id: string; role: string } | null>(null);
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+
     // se já tem token salvo, tenta recuperar o perfil do usuário
     if (token) {
       getProfile()
-        .then((data) => setUser(data))
-        .catch(() => logout());
+        .then((data) => {
+          setUser(data);
+        }).catch(() => logout());
     }
-  }, [token]);
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(user)
+  // }, [user])
 
   async function login(newToken: string) {
     storage.setToken(newToken);
@@ -46,6 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth deve ser usado dentro do AuthProvider");
+  if (!context)
+    throw new Error("useAuth deve ser usado dentro do AuthProvider");
   return context;
 };
