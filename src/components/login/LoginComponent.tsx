@@ -6,12 +6,15 @@ import { useState } from "react";
 import { login } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
 import { LogIn, User, Lock, AlertCircle } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginComponent({ onSwitch }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { login: loginWithContext } = useAuth()
 
   const navigate = useNavigate();
 
@@ -21,9 +24,15 @@ export default function LoginComponent({ onSwitch }) {
     setLoading(true);
 
     try {
-      const data = await login({ username, password });
-      console.log("Login ok", data);
-      navigate("/dashboard");
+
+      const response = await login({ username, password })
+
+      if(response.data?.accessToken){
+        await loginWithContext(response.data.accessToken)
+
+        navigate("/dashboard")
+      }
+
     } catch (error: any) {
       console.log("Erro ao logar", error.message);
       setError("Erro ao fazer login. Tente novamente.");

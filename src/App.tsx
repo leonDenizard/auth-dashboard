@@ -1,14 +1,20 @@
-import Sigin from "./pages/Sigin";
+import Signin from "./pages/Signin/Signin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "@/pages/dasboard/Dashboard";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoutes } from "./Routes/ProtectedRoutes";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Sigin/>} />
-        <Route path="/dashboard" element={<Dashboard/>}/>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Signin />} />
+          <Route element={<ProtectedRoutes/>}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

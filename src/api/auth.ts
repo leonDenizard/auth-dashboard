@@ -20,12 +20,9 @@ export async function login(data:LoginRequest) {
     })
 }
 
-export async function getProfile(token: string){
+export async function getProfile(){
 
-    return apiFetch<{id: string; role: string;}>("profile", {
+    return apiFetch<{id: string; role: string;}>("auth/profile", {
         method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
     })
 }

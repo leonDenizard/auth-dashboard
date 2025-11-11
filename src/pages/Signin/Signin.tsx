@@ -4,7 +4,7 @@ import LoginComponent from "@/components/login/LoginComponent";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Login() {
+export default function Signin() {
   const [isRegistered, setIsRegistered] = useState(false);
 
   const cardVariants = {
