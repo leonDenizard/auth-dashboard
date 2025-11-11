@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
-  
+
   function logout() {
     navigate("/");
   }
@@ -14,7 +14,7 @@ export default function Dashboard() {
   return (
     <div className="flex">
       {/* ========== SIDEBAR ========== */}
-      <div
+      <aside
         className={`${
           sidebarOpen ? "w-64" : "w-0"
         } transition-all duration-300 bg-zinc-900 border-r border-zinc-800 overflow-hidden`}
@@ -31,7 +31,7 @@ export default function Dashboard() {
         </div>
 
         {/* Menu Items */}
-        <nav className="p-4 space-y-2">
+        <nav className="relative p-4 space-y-2 h-[calc(100vh-64px)]">
           <a
             href="#"
             className="flex items-center gap-3 px-4 py-3 text-white bg-zinc-800 rounded-lg"
@@ -63,22 +63,22 @@ export default function Dashboard() {
             <Settings className="w-5 h-5" />
             <span>Configurações</span>
           </a>
-        </nav>
 
-        {/* Footer Sidebar */}
-        <div onClick={logout} className="absolute bottom-0 w-64 p-4 border-t border-zinc-800">
-          <button
-            
-            className="cursor-pointer flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-400 transition-colors w-full"
+          {/* Footer Sidebar */}
+          <div
+            onClick={logout}
+            className="absolute bottom-0 border-t p-4 w-[calc(100%-32px)] border-zinc-800"
           >
-            <LogOut className="w-5 h-5" />
-            <span>Sair</span>
-          </button>
-        </div>
-      </div>
+            <button className="cursor-pointer py-3 flex items-center gap-3 text-zinc-400 hover:text-red-400 transition-colors w-full">
+              <LogOut className="w-5 h-5" />
+              <span>Sair</span>
+            </button>
+          </div>
+        </nav>
+      </aside>
 
       {/* ========== MAIN CONTENT ========== */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col overflow-hidden">
         {/* ========== HEADER ========== */}
         <div className="h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-6">
           <div className="flex items-center gap-4">
@@ -208,10 +208,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </section>
-
           </div>
-
-          
 
           {/* Bottom Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -292,7 +289,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

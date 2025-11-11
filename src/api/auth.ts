@@ -14,7 +14,7 @@ export interface LoginResponse {
 }
 
 export async function login(data:LoginRequest) {
-    return apiFetch<LoginResponse>("login", {
+    return apiFetch<LoginResponse>("auth/login", {
         method: "POST",
         body: JSON.stringify(data)
     })

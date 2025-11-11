@@ -1,0 +1,142 @@
+// components/login/Login.tsx
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { LogIn, User, Lock, BadgeCheck, Mail  } from "lucide-react";
+
+export default function Register({onSwitch}) {
+  const [name, setName] = useState();
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [loading, setLoading] = useState();
+
+  const handleRegister = () => {
+    console.log({
+        name,
+        username,
+        email,
+        password,
+    })
+  };
+
+  console.log(onSwitch)
+
+  return (
+    <div className="w-full max-w-md px-4">
+      {/* Card de Login */}
+      <div className="bg-zinc-900  rounded-lg p-8 shadow-xl">
+        <form onSubmit={handleRegister} className="space-y-6">
+          {/* Name Input */}
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-zinc-300">
+              Nome
+            </Label>
+            <div className="relative">
+              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Input
+                id="name"
+                type="text"
+                placeholder="Digite seu nome"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Email Input */}
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-zinc-300">
+              E-mail
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Input
+                id="email"
+                type="text"
+                placeholder="email@exemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Username Input */}
+          <div className="space-y-2">
+            <Label htmlFor="username" className="text-zinc-300">
+              Usuário
+            </Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Input
+                id="name"
+                type="text"
+                placeholder="Digite seu nome"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password Input */}
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-zinc-300">
+              Senha
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="Digite sua senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            className="w-full bg-white text-black hover:bg-zinc-200 font-medium"
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                Entrando...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <LogIn className="w-4 h-4" />
+                Registrar conta
+              </span>
+            )}
+          </Button>
+        </form>
+
+        {/* Footer Links */}
+        <div className="mt-6 pt-6 border-t border-zinc-800">
+          <div className="flex items-center justify-center text-sm gap-2">
+            <a
+              onClick={onSwitch}
+              href="#"
+              className="text-zinc-400 hover:text-white transition-colors py-1 px-5"
+            >
+              ← Voltar para o login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
