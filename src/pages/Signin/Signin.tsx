@@ -3,6 +3,7 @@ import Register from "@/components/login/Register";
 import LoginComponent from "@/components/login/LoginComponent";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Signin() {
   const [isRegistered, setIsRegistered] = useState(false);
@@ -16,8 +17,18 @@ export default function Signin() {
   };
 
   return (
-     
     <div className="flex flex-col items-center bg-zinc-950 min-h-screen px-4 py-8 md:py-16">
+      <Toaster
+        position="top-center"
+        offset={24}
+        toastOptions={{
+          style: {
+            background: "rgba(20, 83, 45, 0.4)",
+            color: "#fff",
+            border: "2px solid rgba(20, 83, 45, 0.5)",
+          },
+        }}
+      />
       {/* Header fixo */}
       <header className="text-center mb-2 md:mb-6 2xl:mb-14 2xl:mt-10">
         <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-zinc-900 shadow-sm shadow-white/30 rounded-lg mb-4">
@@ -56,7 +67,10 @@ export default function Signin() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
               className="w-full"
             >
-              <Register onSwitch={() => setIsRegistered(false)} />
+              <Register
+                onSwitch={() => setIsRegistered(false)}
+                setIsRegistered={setIsRegistered}
+              />
             </motion.div>
           )}
         </AnimatePresence>

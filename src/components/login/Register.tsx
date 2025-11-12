@@ -3,25 +3,44 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { LogIn, User, Lock, BadgeCheck, Mail  } from "lucide-react";
+import { LogIn, User, Lock, BadgeCheck, Mail } from "lucide-react";
+import { createUser } from "@/api/user";
+import { toast } from "sonner";
 
-export default function Register({onSwitch}) {
+interface RegisterProp {
+  onSwitch: () => void;
+}
+
+export default function Register({ onSwitch }) {
   const [name, setName] = useState();
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    console.log({
-        name,
-        username,
-        email,
-        password,
-    })
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await createUser({ name, username, email, password });
+
+      console.log(response.message);
+
+      onSwitch();
+      toast.success("Conta criada com sucesso!");
+    } catch (error: any) {
+      console.log("Erro ao criar usuário", error.message);
+    } finally {
+      setLoading(false);
+    }
+    // console.log({
+    //     name,
+    //     username,
+    //     email,
+    //     password,
+    // })
   };
-
-  console.log(onSwitch)
 
   return (
     <div className="w-full max-w-md px-4">
@@ -34,7 +53,7 @@ export default function Register({onSwitch}) {
               Nome
             </Label>
             <div className="relative">
-              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
               <Input
                 id="name"
                 type="text"
@@ -72,11 +91,11 @@ export default function Register({onSwitch}) {
               Usuário
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
               <Input
                 id="name"
                 type="text"
-                placeholder="Digite seu nome"
+                placeholder="Crie um username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
@@ -109,11 +128,12 @@ export default function Register({onSwitch}) {
             type="submit"
             className="w-full bg-white text-black hover:bg-zinc-200 font-medium"
             disabled={loading}
+            onClick={handleRegister}
           >
             {loading ? (
               <span className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                Entrando...
+                Cadastrando usuário...
               </span>
             ) : (
               <span className="flex items-center gap-2">

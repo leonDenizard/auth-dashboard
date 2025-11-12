@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { login } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
-import { LogIn, User, Lock, AlertCircle } from "lucide-react";
+import { LogIn, User, Lock, AlertCircle, BadgeCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export default function LoginComponent({ onSwitch }) {
@@ -52,7 +52,7 @@ export default function LoginComponent({ onSwitch }) {
               Usuário
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
               <Input
                 id="username"
                 type="text"
