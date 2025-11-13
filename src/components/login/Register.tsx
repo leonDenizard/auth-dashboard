@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { LogIn, User, Lock, BadgeCheck, Mail } from "lucide-react";
+import { LogIn, User, Lock, BadgeCheck, Mail, UserCheck } from "lucide-react";
 import { createUser } from "@/api/user";
 import { toast } from "sonner";
 
@@ -45,7 +45,7 @@ export default function Register({ onSwitch }) {
   return (
     <div className="w-full max-w-md px-4 z-10">
       {/* Card de Login */}
-      <div className="bg-zinc-900  rounded-lg p-8 shadow-xl">
+      <div className="backdrop-blur-2xl bg-black/40 rounded p-8 shadow-xl">
         <form onSubmit={handleRegister} className="space-y-6">
           {/* Name Input */}
           <div className="space-y-2">
@@ -53,7 +53,7 @@ export default function Register({ onSwitch }) {
               Nome
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="name"
                 type="text"
@@ -72,7 +72,7 @@ export default function Register({ onSwitch }) {
               E-mail
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="email"
                 type="text"
@@ -91,7 +91,7 @@ export default function Register({ onSwitch }) {
               Usuário
             </Label>
             <div className="relative">
-              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="name"
                 type="text"
@@ -110,7 +110,7 @@ export default function Register({ onSwitch }) {
               Senha
             </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="password"
                 type="password"
@@ -137,7 +137,7 @@ export default function Register({ onSwitch }) {
               </span>
             ) : (
               <span className="flex items-center gap-2">
-                <LogIn className="w-4 h-4" />
+                <UserCheck className="w-4 h-4" />
                 Registrar conta
               </span>
             )}
@@ -145,7 +145,7 @@ export default function Register({ onSwitch }) {
         </form>
 
         {/* Footer Links */}
-        <div className="mt-6 pt-6 border-t border-zinc-800">
+        <div className="mt-6 pt-6 border-t-2 border-white/10">
           <div className="flex items-center justify-center text-sm gap-2">
             <a
               onClick={onSwitch}

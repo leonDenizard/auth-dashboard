@@ -44,7 +44,7 @@ export default function LoginComponent({ onSwitch, onForgot }) {
 
   return (
     <div className="w-full max-w-md px-4">
-      <div className="bg-zinc-900 rounded-lg p-8 shadow-xl">
+      <div className="backdrop-blur-2xl bg-black/40 rounded p-8 shadow-xl">
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Username Input */}
           <div className="space-y-2">
@@ -52,7 +52,7 @@ export default function LoginComponent({ onSwitch, onForgot }) {
               Usuário
             </Label>
             <div className="relative">
-              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="username"
                 type="text"
@@ -71,7 +71,7 @@ export default function LoginComponent({ onSwitch, onForgot }) {
               Senha
             </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="password"
                 type="password"
@@ -113,7 +113,7 @@ export default function LoginComponent({ onSwitch, onForgot }) {
         </form>
 
         {/* Footer Links */}
-        <div className="mt-6 pt-6 border-t border-zinc-800">
+        <div className="mt-6 pt-6 border-t-2 border-white/10">
           <div className="flex items-center justify-between text-sm">
             <a
               onClick={onForgot}
