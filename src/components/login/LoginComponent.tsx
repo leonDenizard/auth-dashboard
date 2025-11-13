@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { LogIn, User, Lock, AlertCircle, BadgeCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
-export default function LoginComponent({ onSwitch }) {
+export default function LoginComponent({ onSwitch, onForgot }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -116,6 +116,7 @@ export default function LoginComponent({ onSwitch }) {
         <div className="mt-6 pt-6 border-t border-zinc-800">
           <div className="flex items-center justify-between text-sm">
             <a
+              onClick={onForgot}
               href="#"
               className="text-zinc-400 hover:text-white transition-colors py-2"
             >

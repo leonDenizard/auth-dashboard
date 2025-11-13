@@ -1,12 +1,14 @@
 import { LogIn } from "lucide-react";
 import Register from "@/components/login/Register";
 import LoginComponent from "@/components/login/LoginComponent";
+import ForgotPassword from "@/components/login/FogortPassword";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function Signin() {
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   const cardVariants = {
     hiddenRight: { x: "1%", opacity: 0 },
@@ -38,14 +40,26 @@ export default function Signin() {
           Bem-vindo
         </h1>
         <p className="text-zinc-400 text-sm md:text-base">
-          {isRegistered ? "Cadastra-se grátis" : "Faça login para continuar"}
+          {isRegistered ? "Cadastra-se grátis" : isForgotPassword ? "Cadastre uma nova senha" : "Faça login para continuar"}
         </p>
       </header>
 
       {/* Área animada */}
       <div className="flex-1 w-full max-w-md flex items-start justify-center">
         <AnimatePresence mode="wait">
-          {!isRegistered ? (
+          {isForgotPassword ? (
+            <motion.div
+              key="forgot"
+              variants={cardVariants}
+              initial="hiddenRight"
+              animate="visible"
+              exit="exitLeft"
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="w-full"
+            >
+              <ForgotPassword onBack={() => setIsForgotPassword(false)} />
+            </motion.div>
+          ) : !isRegistered ? (
             <motion.div
               key="login"
               variants={cardVariants}
@@ -55,7 +69,9 @@ export default function Signin() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
               className="w-full"
             >
-              <LoginComponent onSwitch={() => setIsRegistered(true)} />
+              <LoginComponent onSwitch={() => setIsRegistered(true)}
+                onForgot={() => setIsForgotPassword(true)}
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -69,7 +85,6 @@ export default function Signin() {
             >
               <Register
                 onSwitch={() => setIsRegistered(false)}
-                setIsRegistered={setIsRegistered}
               />
             </motion.div>
           )}
