@@ -41,7 +41,7 @@ export default function FogortPassword({ onBack }) {
   
 
   return (
-    <div className="w-full max-w-md px-4">
+    <div className="w-full max-w-md px-4 z-10">
       {/* Card de Login */}
       <div className="bg-zinc-900  rounded-lg p-8 shadow-xl">
         <form onSubmit={handleUpdatePassword} className="space-y-6">

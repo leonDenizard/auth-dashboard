@@ -20,6 +20,14 @@ export async function apiFetch<T>(
     ...options,
   });
 
+  // se o token expirou ou foi invalidado (senha trocada)
+  if (res.status === 401) {
+    const logoutEvent = new CustomEvent("logout");
+    window.dispatchEvent(logoutEvent);
+    throw new Error("Sessão expirada. Faça login novamente.")
+  }
+
+
   if (!res.ok) {
     const errorText = await res.text();
     throw new Error(`Erro ${res.status}: ${errorText}`);

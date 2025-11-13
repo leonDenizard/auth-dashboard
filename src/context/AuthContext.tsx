@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { storage } from "@/utils/storage";
 import { getProfile } from "@/api/auth";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   user: { id: string; role: string } | null;
@@ -19,21 +20,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(storage.getToken());
   const [user, setUser] = useState<{ id: string; role: string } | null>(null);
 
+  const navigate = useNavigate()
+
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
 
     // se já tem token salvo, tenta recuperar o perfil do usuário
     if (token) {
       getProfile()
         .then((data) => {
           setUser(data);
-        }).catch(() => logout());
+        })
+        .catch(() => logout());
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log(user)
-  // }, [user])
+  useEffect(() => {
+    const handleLogout = () => logout();
+    window.addEventListener("logout", handleLogout);
+    return () => window.removeEventListener("logout", handleLogout);
+  }, []);
 
   async function login(newToken: string) {
     storage.setToken(newToken);
@@ -46,6 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     storage.clear();
     setToken(null);
     setUser(null);
+    navigate("/")
   }
 
   return (
