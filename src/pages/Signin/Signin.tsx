@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
 import ColorBends from "@/components/login/ColorBends";
+import SplitText from "@/components/ui/SplitText";
 
 export default function Signin() {
   const [isRegistered, setIsRegistered] = useState(false);
@@ -17,6 +18,10 @@ export default function Signin() {
     visible: { x: 0, opacity: 1 },
     exitLeft: { x: "-1%", opacity: 0 },
     exitRight: { x: "1%", opacity: 0 },
+  };
+
+  const handleAnimationComplete = () => {
+    console.log("All letters have animated!");
   };
 
   return (
@@ -55,12 +60,12 @@ export default function Signin() {
             },
           }}
         />
-        {/* Header fixo */}
+        {/* Header */}
         <header className="text-center mb-2 md:mb-6 2xl:mb-14 2xl:mt-10 z-10">
           <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 backdrop-blur-2xl bg-black/50 shadow-md shadow-white/10 rounded-lg mb-4">
             <LogIn className="w-7 h-7 md:w-8 md:h-8 text-white" />
           </div>
-          <h1
+          {/* <h1
             className="block text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2"
             style={{
               textShadow: `
@@ -72,8 +77,25 @@ export default function Signin() {
             }}
           >
             Bem-vindo
-          </h1>
-          <p className="text-zinc-400 text-sm md:text-base">
+          </h1> */}
+          <div>
+            <SplitText
+              text="Bem-vindo!"
+              className="text-4xl font-bold text-center text-white text-shadow-lg py-1"
+              delay={100}
+              duration={2}
+              ease="elastic.out(1, 0.3)"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+              onLetterAnimationComplete={handleAnimationComplete}
+          
+            />
+          </div>
+          <p className="text-zinc-400 text-sm md:text-base text-shadow-lg">
             {isRegistered
               ? "Cadastre-se grátis"
               : isForgotPassword
