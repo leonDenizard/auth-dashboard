@@ -31,14 +31,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .then((data) => {
           setUser(data);
         })
-        .catch(() => logout());
+        .catch(() => console.warn("Falhou ao obter perfil"));
     }
-  }, []);
+  }, [token]);
+  
 
   useEffect(() => {
     const handleLogout = () => logout();
     window.addEventListener("logout", handleLogout);
+
+    console.log("logou disparado")
+
     return () => window.removeEventListener("logout", handleLogout);
+    
   }, []);
 
   async function login(newToken: string) {

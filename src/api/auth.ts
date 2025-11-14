@@ -1,20 +1,23 @@
 import { apiFetch } from "./client"
 
 export interface LoginRequest {
-  username: string;
-  password: string;
+    username: string;
+    password: string;
 }
 
 
 export interface LoginResponse {
-  message: string;
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-  };
+    message: string;
+    data: {
+        accessToken: string;
+        refreshToken: string;
+        user: {
+            id: string;
+            username: string;
+            email: string;
+        };
+    }
+
 }
 
 export interface ForgotPasswordRequest {

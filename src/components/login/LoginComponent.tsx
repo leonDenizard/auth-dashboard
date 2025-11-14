@@ -32,8 +32,10 @@ export default function LoginComponent({ onSwitch, onForgot }: LoginComponentPro
 
       const response = await login({ username, password })
 
-      if(response.accessToken){
-        await loginWithContext(response.accessToken)
+      console.log(response)
+      console.log(response.data.accessToken)
+      if(response.data.accessToken){
+        await loginWithContext(response.data.accessToken)
 
         navigate("/dashboard")
       }
