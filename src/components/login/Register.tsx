@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { LogIn, User, Lock, BadgeCheck, Mail, UserCheck } from "lucide-react";
+import { User, Lock, BadgeCheck, Mail, UserCheck } from "lucide-react";
 import { createUser } from "@/api/user";
 import { toast } from "sonner";
 
@@ -11,11 +11,11 @@ interface RegisterProp {
   onSwitch: () => void;
 }
 
-export default function Register({ onSwitch }) {
-  const [name, setName] = useState();
-  const [username, setUsername] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+export default function Register({ onSwitch }: RegisterProp) {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {

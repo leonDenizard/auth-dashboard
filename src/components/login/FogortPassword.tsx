@@ -3,18 +3,19 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { LogIn, User, Lock, BadgeCheck, Mail, LockKeyhole, LockKeyholeOpen, LockOpen } from "lucide-react";
+import { Lock, BadgeCheck, Mail, LockOpen } from "lucide-react";
 import { toast } from "sonner";
 import { updatePassword } from "@/api/auth";
 
-interface RegisterProp {
-  onSwitch: () => void;
+interface ForgotPasswordProps {
+  onBack: () => void;
 }
 
-export default function FogortPassword({ onBack }) {
-  const [username, setUsername] = useState();
-  const [email, setEmail] = useState();
-  const [newPassword, setNewPassword] = useState();
+
+export default function FogortPassword({ onBack }: ForgotPasswordProps) {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
@@ -22,7 +23,7 @@ export default function FogortPassword({ onBack }) {
     setLoading(true);
 
     try {
-      const response = await updatePassword({username, email, newPassword});
+      await updatePassword({username, email, newPassword});
 
       console.log(username, email, newPassword );
 

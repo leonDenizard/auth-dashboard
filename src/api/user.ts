@@ -14,6 +14,7 @@ export interface UserResponse {
     username: string,
     name: string,
     email: string,
+    message: string
 }
 
 export async function createUser(data:UserRequest){

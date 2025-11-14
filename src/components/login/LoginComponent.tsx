@@ -5,10 +5,15 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { login } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
-import { LogIn, User, Lock, AlertCircle, BadgeCheck } from "lucide-react";
+import { LogIn, Lock, AlertCircle, BadgeCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
-export default function LoginComponent({ onSwitch, onForgot }) {
+interface LoginComponentProps {
+  onSwitch: () => void;
+  onForgot: () => void;
+}
+
+export default function LoginComponent({ onSwitch, onForgot }: LoginComponentProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,8 +32,8 @@ export default function LoginComponent({ onSwitch, onForgot }) {
 
       const response = await login({ username, password })
 
-      if(response.data?.accessToken){
-        await loginWithContext(response.data.accessToken)
+      if(response.accessToken){
+        await loginWithContext(response.accessToken)
 
         navigate("/dashboard")
       }

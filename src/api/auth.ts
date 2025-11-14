@@ -1,40 +1,45 @@
 import { apiFetch } from "./client"
 
 export interface LoginRequest {
-    username: string,
-    password: string
+  username: string;
+  password: string;
 }
 
+
 export interface LoginResponse {
-    token: string
-    user:{
-        id: string,
-        role: string
-    }
+  message: string;
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+  };
 }
+
 export interface ForgotPasswordRequest {
     username: string,
     email: string,
     newPassword: string
 }
 
-export async function login(data:LoginRequest) {
+export async function login(data: LoginRequest) {
     return apiFetch<LoginResponse>("auth/login", {
         method: "POST",
         body: JSON.stringify(data)
     })
 }
 
-export async function getProfile(){
+export async function getProfile() {
 
-    return apiFetch<{id: string; role: string;}>("auth/profile", {
+    return apiFetch<{ id: string; role: string; }>("auth/profile", {
         method: "GET",
     })
 }
 
-export async function updatePassword(data:ForgotPasswordRequest){
+export async function updatePassword(data: ForgotPasswordRequest) {
 
-    return apiFetch<{ForgotPasswordRequest}>("auth/forgot-password", {
+    return apiFetch<ForgotPasswordRequest>("auth/forgot-password", {
         method: "POST",
         body: JSON.stringify(data)
     })
