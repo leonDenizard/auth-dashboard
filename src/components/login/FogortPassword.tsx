@@ -107,7 +107,7 @@ export default function ForgotPassword({ onBack }: ForgotPasswordProps) {
                   required: "Digite a nova senha",
                   minLength: {
                     value: 4,
-                    message: "A senha precisa ter pelo menos 6 caracteres",
+                    message: "A senha precisa ter pelo menos 4 caracteres",
                   },
                   maxLength: {
                     value: 12,
