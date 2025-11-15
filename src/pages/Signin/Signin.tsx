@@ -83,16 +83,15 @@ export default function Signin() {
               text="Bem-vindo!"
               className="text-4xl font-bold text-center text-white text-shadow-lg py-1"
               delay={100}
-              duration={2}
-              ease="elastic.out(1, 0.3)"
+              duration={1.5}
+              ease="elastic.out(0.5, 0.4)"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
               to={{ opacity: 1, y: 0 }}
               threshold={0.1}
-              rootMargin="-100px"
+              rootMargin="-50px"
               textAlign="center"
               onLetterAnimationComplete={handleAnimationComplete}
-          
             />
           </div>
           <p className="text-zinc-400 text-sm md:text-base text-shadow-lg">

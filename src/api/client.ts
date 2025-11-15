@@ -1,4 +1,6 @@
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+export const API_URL = import.meta.env.MODE === "production" ? import.meta.env.VITE_API_URL : "http://localhost:3000/api";
+
+console.log(API_URL)
 
 // Função para obter o token do localStorage
 function getToken() {
@@ -29,8 +31,18 @@ export async function apiFetch<T>(
 
 
   if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Erro ${res.status}: ${errorText}`);
+    const text = await res.text();
+
+    let message = "Erro inesperado";
+
+    try {
+      const json = JSON.parse(text);
+      message = json.message || message;
+    } catch {
+      message = text;
+    }
+
+    throw new Error(message);
   }
 
   return res.json() as Promise<T>;

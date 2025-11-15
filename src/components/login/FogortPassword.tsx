@@ -1,9 +1,8 @@
-// components/login/Login.tsx
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { Lock, BadgeCheck, Mail, LockOpen } from "lucide-react";
+import { Lock, BadgeCheck, Mail, LockOpen, AlertCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { updatePassword } from "@/api/auth";
 
@@ -11,43 +10,38 @@ interface ForgotPasswordProps {
   onBack: () => void;
 }
 
+interface FormData {
+  username: string;
+  email: string;
+  newPassword: string;
+}
 
-export default function FogortPassword({ onBack }: ForgotPasswordProps) {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function ForgotPassword({ onBack }: ForgotPasswordProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm<FormData>();
 
-  const handleUpdatePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const onSubmit = async (data: FormData) => {
     try {
-      await updatePassword({username, email, newPassword});
-
-      console.log(username, email, newPassword );
-
-      onBack();
+      await updatePassword(data);
       toast.success("Senha alterada com sucesso!");
-    } catch (error: any) {
-      console.log("Erro ao criar usuário", error.message);
-    } finally {
-      setLoading(false);
+      onBack();
+    } catch (err: any) {
+      // Erro da API vira erro "global"
+      setError("root", { message: err.message });
     }
   };
 
-  useEffect(() => {
-    console.log(username, email, newPassword)
-  }, [username, email, newPassword])
-  
-
   return (
     <div className="w-full max-w-md px-4 z-10">
-      {/* Card de Login */}
       <div className="backdrop-blur-2xl bg-black/40 rounded p-8 shadow-xl">
-        <form onSubmit={handleUpdatePassword} className="space-y-6">
+        
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           
-          {/* Username Input */}
+          {/* Username */}
           <div className="space-y-2">
             <Label htmlFor="username" className="text-zinc-300">
               Usuário
@@ -56,17 +50,24 @@ export default function FogortPassword({ onBack }: ForgotPasswordProps) {
               <BadgeCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="username"
-                type="text"
+                {...register("username", {
+                  required: "Informe o usuário",
+                  minLength: {
+                    value: 3,
+                    message: "Mínimo de 3 caracteres",
+                  }
+                })}
                 placeholder="Digite seu username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
-                required
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white"
               />
             </div>
+
+            {errors.username && (
+              <p className="text-red-400 text-sm">{errors.username.message}</p>
+            )}
           </div>
-          
-          {/* Email Input */}
+
+          {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-zinc-300">
               E-mail
@@ -75,49 +76,83 @@ export default function FogortPassword({ onBack }: ForgotPasswordProps) {
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="email"
-                type="text"
+                {...register("email", {
+                  required: "Informe o e-mail",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Formato de e-mail inválido",
+                  },
+                })}
                 placeholder="email@exemplo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
-                required
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white"
               />
             </div>
+
+            {errors.email && (
+              <p className="text-red-400 text-sm">{errors.email.message}</p>
+            )}
           </div>
 
-          {/* NEWPassword Input */}
+          {/* Nova senha */}
           <div className="space-y-2">
             <Label htmlFor="newpassword" className="text-zinc-300">
-              Senha
+              Nova senha
             </Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
               <Input
                 id="newpassword"
                 type="password"
+                {...register("newPassword", {
+                  required: "Digite a nova senha",
+                  minLength: {
+                    value: 4,
+                    message: "A senha precisa ter pelo menos 6 caracteres",
+                  },
+                  maxLength: {
+                    value: 12,
+                    message: "A senha não pode ultrapassar 12 caracteres"
+                  }
+                })}
                 placeholder="Digite sua nova senha"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
-                required
+                className="pl-10 bg-zinc-950 border-zinc-800 text-white"
               />
             </div>
+
+            {errors.newPassword && (
+              <p className="text-red-400 text-sm">{errors.newPassword.message}</p>
+            )}
           </div>
 
-          {/* Submit Button */}
+          {/* Error global da API */}
+          {errors.root?.message && (
+            <div className="flex items-center gap-2 bg-red-950/50 border border-red-900 rounded-lg p-3">
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <p className="text-red-400 text-sm">{errors.root.message}</p>
+            </div>
+          )}
+
+          {/* Botão */}
           <Button
             type="submit"
-            className="w-full bg-white text-black hover:bg-zinc-200 font-medium"
-            disabled={loading}
+            className="w-full bg-white text-black hover:bg-zinc-200"
+            disabled={isSubmitting}
           >
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                Alterando senha...
+              </span>
+            ) : (
               <span className="flex items-center gap-2">
                 <LockOpen className="w-4 h-4" />
                 Alterar senha
               </span>
+            )}
           </Button>
         </form>
 
-        {/* Footer Links */}
+        {/* Footer */}
         <div className="mt-6 pt-6 border-t-2 border-white/10">
           <div className="flex items-center justify-center text-sm gap-2">
             <a
@@ -129,6 +164,7 @@ export default function FogortPassword({ onBack }: ForgotPasswordProps) {
             </a>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -26,6 +26,12 @@ export interface ForgotPasswordRequest {
     newPassword: string
 }
 
+export interface ForgotPasswordResponse {
+    data: string,
+    message: string,
+    success: boolean
+}
+
 export async function login(data: LoginRequest) {
     return apiFetch<LoginResponse>("auth/login", {
         method: "POST",
@@ -42,7 +48,7 @@ export async function getProfile() {
 
 export async function updatePassword(data: ForgotPasswordRequest) {
 
-    return apiFetch<ForgotPasswordRequest>("auth/forgot-password", {
+    return apiFetch<ForgotPasswordResponse>("auth/forgot-password", {
         method: "POST",
         body: JSON.stringify(data)
     })
