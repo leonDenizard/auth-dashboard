@@ -49,7 +49,7 @@ Crie um arquivo `.env` na raiz do projeto:
 REACT_APP_API_URL=http://localhost:3000
 
 # Ambiente
-NODE_ENV=development
+MODE=development
 ```
 
 ## Executando o Projeto
@@ -87,8 +87,8 @@ auth-dashboard-front/
 
 ## Funcionalidades
 
-- Tela de login com validação
-- Armazenamento seguro do token JWT
+- Tela de login com validação React hook forms
+- Armazenamento do token JWT (localStorage)
 - Proteção de rotas privadas
 - Redirecionamento automático
 - Logout e limpeza de sessão
@@ -146,6 +146,6 @@ Authorization: Bearer {seu_token}
 
 1. Usuário acessa a tela de login
 2. Insere credenciais (username e password)
-3. Frontend envia requisição POST para `/login`
+3. Frontend envia requisição POST para `/auth/login`
 4. Backend valida e retorna token JWT
 5. Usuário acessa o dashboard

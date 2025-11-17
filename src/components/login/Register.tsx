@@ -61,6 +61,7 @@ export default function Register({ onSwitch }: RegisterProp) {
                 })}
                 type="text"
                 placeholder="Digite seu nome"
+                autoComplete="off"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
               />
             </div>
@@ -88,7 +89,7 @@ export default function Register({ onSwitch }: RegisterProp) {
                 type="text"
                 placeholder="email@exemplo.com"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
-                required
+                autoComplete="off"
               />
             </div>
             {errors.email && (
@@ -115,6 +116,7 @@ export default function Register({ onSwitch }: RegisterProp) {
                 type="text"
                 placeholder="Crie um username"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
+                autoComplete="off"
               />
             </div>
             {errors.username && (
@@ -145,6 +147,7 @@ export default function Register({ onSwitch }: RegisterProp) {
                 type="password"
                 placeholder="Digite sua senha"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-zinc-700"
+                autoComplete="off"
               />
             </div>
             {errors.password && (

@@ -97,6 +97,7 @@ export default function LoginComponent({ onSwitch, onForgot }: LoginComponentPro
                     message: "Mínimo de 3 caracteres",
                   }
                 })}
+                autoComplete="off"
                 type="text"
                 placeholder="Digite seu usuário"
                 // value={username}
@@ -126,6 +127,7 @@ export default function LoginComponent({ onSwitch, onForgot }: LoginComponentPro
                     message: "A senha precisa ter pelo menos 4 caracteres"
                   }
                 })}
+                autoComplete="off"
                 type="password"
                 placeholder="Digite sua senha"
                 // value={password}

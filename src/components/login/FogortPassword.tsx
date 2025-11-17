@@ -59,6 +59,7 @@ export default function ForgotPassword({ onBack }: ForgotPasswordProps) {
                 })}
                 placeholder="Digite seu username"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white"
+                autoComplete="off"
               />
             </div>
 
@@ -85,6 +86,7 @@ export default function ForgotPassword({ onBack }: ForgotPasswordProps) {
                 })}
                 placeholder="email@exemplo.com"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white"
+                autoComplete="off"
               />
             </div>
 
@@ -114,6 +116,7 @@ export default function ForgotPassword({ onBack }: ForgotPasswordProps) {
                     message: "A senha não pode ultrapassar 12 caracteres"
                   }
                 })}
+                autoComplete="off"
                 placeholder="Digite sua nova senha"
                 className="pl-10 bg-zinc-950 border-zinc-800 text-white"
               />
