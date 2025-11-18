@@ -1,34 +1,24 @@
+import { useAuth } from "@/context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import {jwtDecode} from "jwt-decode";
-
-interface JwtPayload {
-  exp: number; // tempo de expiração do token em segundos
-}
+import { jwtDecode } from "jwt-decode";
+import { refreshAccessToken } from "@/api/refresh";
 
 export function ProtectedRoutes() {
-  const { token, logout } = useAuth();
+  const { token } = useAuth();
 
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
+  if (!token) return <Navigate to="/" replace />;
 
   try {
-    // decodifica o token para checar expiração
-    const decoded = jwtDecode<JwtPayload>(token);
-    const now = Date.now() / 1000; // em segundos
+    const decoded = jwtDecode<{ exp: number }>(token);
+    const now = Date.now() / 1000;
 
-    // console.log("Token validade", decoded.exp)
-    // console.log("hora agora", now)
+    // token expirado → só redireciona
     if (decoded.exp < now) {
-      logout()
-      return <Navigate to="/" replace />;
+     refreshAccessToken()
     }
 
     return <Outlet />;
   } catch (err) {
-    // token inválido ou corrompido
-    logout();
     return <Navigate to="/" replace />;
   }
 }

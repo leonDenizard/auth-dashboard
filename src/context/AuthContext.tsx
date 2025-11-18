@@ -1,13 +1,16 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { storage } from "@/utils/storage";
-import { getProfile } from "@/api/auth";
+import { getProfile, type LoginResponse } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
+import { refreshAccessToken } from "@/api/refresh";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthContextType {
   user: { id: string; role: string } | null;
   token: string | null;
-  login: (token: string) => Promise<void>;
+  login: (loginResponse: LoginResponse) => Promise<void>;
   logout: () => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -15,41 +18,63 @@ const AuthContext = createContext<AuthContextType>({
   token: null,
   login: async () => {},
   logout: () => {},
+  loading: true,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(storage.getToken());
   const [user, setUser] = useState<{ id: string; role: string } | null>(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    async function tryRefresh() {
+      const access = storage.getToken();
+      const refresh = storage.getRefreshToken();
 
-    // se já tem token salvo, tenta recuperar o perfil do usuário
-    if (token) {
-      getProfile()
-        .then((data) => {
-          setUser(data);
-        })
-        .catch(() => console.warn("Falhou ao obter perfil"));
+      if (!refresh) return;
+      if (!access) return;
+
+      try {
+        const decoded = jwtDecode<{ exp: number }>(access);
+        const now = Date.now() / 1000;
+
+        if (decoded.exp < now) {
+          const newToken = await refreshAccessToken();
+          if (newToken) {
+            setToken(newToken); // <-- ESSA LINHA É CRUCIAL
+          } else {
+            logout();
+          }
+        }
+      } catch {
+        logout();
+      }
     }
-  }, [token]);
-  
+
+    tryRefresh();
+  }, []);
 
   useEffect(() => {
     const handleLogout = () => logout();
     window.addEventListener("logout", handleLogout);
 
-    console.log("logou disparado")
+    console.log("logou disparado");
 
     return () => window.removeEventListener("logout", handleLogout);
-    
   }, []);
 
-  async function login(newToken: string) {
-    storage.setToken(newToken);
-    setToken(newToken);
+  async function login(loginResponse: LoginResponse) {
+    const { accessToken, refreshToken } = loginResponse.data;
+
+    storage.setToken(accessToken);
+    storage.setRefreshToken(refreshToken);
+
+    setToken(accessToken);
     const data = await getProfile();
+
     setUser(data);
   }
 
@@ -57,11 +82,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     storage.clear();
     setToken(null);
     setUser(null);
-    navigate("/")
+    navigate("/");
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

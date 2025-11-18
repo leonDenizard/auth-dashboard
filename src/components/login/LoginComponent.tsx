@@ -18,10 +18,6 @@ interface FormData{
   password: string
 }
 export default function LoginComponent({ onSwitch, onForgot }: LoginComponentProps) {
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-  // const [loading, setLoading] = useState(false);
   
   const {
       register,
@@ -39,10 +35,9 @@ export default function LoginComponent({ onSwitch, onForgot }: LoginComponentPro
 
       const response = await login(data)
 
-      console.log(response)
-      console.log(response.data.accessToken)
+      console.log("REPONSE", response)
       if(response.data.accessToken){
-        await loginWithContext(response.data.accessToken)
+        await loginWithContext(response)
 
         navigate("/dashboard")
       }
@@ -50,32 +45,6 @@ export default function LoginComponent({ onSwitch, onForgot }: LoginComponentPro
       setError("root", { message: err.message });
     }
   }
-
-  // async function handleLogin(e: React.FormEvent) {
-  //   e.preventDefault();
-  //   setError("");
-  //   setLoading(true);
-
-  //   try {
-
-  //     const response = await login({ username, password })
-
-  //     console.log(response)
-  //     console.log(response.data.accessToken)
-  //     if(response.data.accessToken){
-  //       await loginWithContext(response.data.accessToken)
-
-  //       navigate("/dashboard")
-  //     }
-
-  //   } catch (error: any) {
-  //     console.log("Erro ao logar", error.message);
-  //     setError("Erro ao fazer login. Tente novamente.");
-  //   } finally {
-  //     setLoading(false);
-  //     setPassword("");
-  //   }
-  // }
 
   return (
     <div className="w-full max-w-md px-4">

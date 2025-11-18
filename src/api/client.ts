@@ -1,38 +1,50 @@
-export const API_URL = import.meta.env.MODE === "production" ? import.meta.env.VITE_API_URL : "http://localhost:3000/api";
+import { storage } from "@/utils/storage";
+import { refreshAccessToken } from "./refresh";
 
-console.log(API_URL)
+export const API_URL = import.meta.env.MODE === "production"
+  ? import.meta.env.VITE_API_URL
+  : "http://localhost:3000/api";
 
-// Função para obter o token do localStorage
 function getToken() {
-  return localStorage.getItem("token");
+  return storage.getToken();
 }
 
 export async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
+
   const token = getToken();
 
-  const res = await fetch(`${API_URL}/${endpoint}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers || {}),
-    },
-    ...options,
-  });
+  const doFetch = async (customToken?: string) => {
+    return fetch(`${API_URL}/${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(customToken ? { Authorization: `Bearer ${customToken}` } : {}),
+        ...(options.headers || {}),
+      },
+      ...options,
+    });
+  };
 
-  // se o token expirou ou foi invalidado (senha trocada)
+
+  let res = await doFetch(token);
+
+
   if (res.status === 401) {
-    const logoutEvent = new CustomEvent("logout");
-    window.dispatchEvent(logoutEvent);
-    throw new Error("Sessão expirada. Faça login novamente.")
-  }
+    const newAccessToken = await refreshAccessToken();
 
+    if (!newAccessToken) {
+      const logoutEvent = new CustomEvent("logout");
+      window.dispatchEvent(logoutEvent);
+      throw new Error("Sessão expirada. Faça login novamente.");
+    }
+
+    res = await doFetch(newAccessToken);
+  }
 
   if (!res.ok) {
     const text = await res.text();
-
     let message = "Erro inesperado";
 
     try {
