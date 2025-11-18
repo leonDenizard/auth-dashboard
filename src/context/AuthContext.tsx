@@ -10,7 +10,6 @@ interface AuthContextType {
   token: string | null;
   login: (loginResponse: LoginResponse) => Promise<void>;
   logout: () => void;
-  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -18,7 +17,6 @@ const AuthContext = createContext<AuthContextType>({
   token: null,
   login: async () => {},
   logout: () => {},
-  loading: true,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -26,8 +24,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<{ id: string; role: string } | null>(null);
 
   const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function tryRefresh() {
@@ -86,7 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

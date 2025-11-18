@@ -28,7 +28,7 @@ export async function apiFetch<T>(
   };
 
 
-  let res = await doFetch(token);
+  let res = await doFetch(token ?? undefined);
 
 
   if (res.status === 401) {
